@@ -103,17 +103,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.getElementById('navLinks');
 
     if (toggle && navLinks) {
+        let scrollPos = 0;
+
+        const preventScroll = (e) => {
+            if (navLinks.classList.contains('open')) {
+                e.preventDefault();
+            }
+        };
+
+        const closeMenu = () => {
+            navLinks.classList.remove('open');
+            toggle.classList.remove('active');
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            window.scrollTo(0, scrollPos);
+            document.removeEventListener('wheel', preventScroll, { passive: false });
+            document.removeEventListener('touchmove', preventScroll, { passive: false });
+        };
+
         toggle.addEventListener('click', () => {
             const open = navLinks.classList.toggle('open');
             toggle.classList.toggle('active', open);
+            
+            if (open) {
+                scrollPos = window.scrollY;
+                document.body.style.overflow = 'hidden';
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+                document.body.style.top = -scrollPos + 'px';
+                document.addEventListener('wheel', preventScroll, { passive: false });
+                document.addEventListener('touchmove', preventScroll, { passive: false });
+            } else {
+                closeMenu();
+            }
         });
 
         // Close on link click
         navLinks.querySelectorAll('.nav__link').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('open');
-                toggle.classList.remove('active');
-            });
+            link.addEventListener('click', closeMenu);
         });
     }
 

@@ -231,6 +231,7 @@ mark {
     justify-content: space-between;
     padding: 1.4rem 5%;
     transition: all .4s ease;
+    overflow: hidden;
 }
 
 .nav.scrolled {
@@ -1778,11 +1779,14 @@ mark {
         top: -100%;
         left: 0;
         right: 0;
+        z-index: 999;
         background: rgba(26, 26, 26, .98);
         flex-direction: column;
         padding: 5rem 2rem 2rem;
         transition: top .4s ease;
         gap: 1.5rem;
+        max-height: 100vh;
+        overflow-y: auto;
     }
 
     .nav__links.open {
